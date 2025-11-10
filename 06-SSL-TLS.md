@@ -7,7 +7,6 @@
 
 ---
 
-
 ### 🎯 O Que É SSL/TLS?
 
 **SSL** = **S**ecure **S**ockets **L**ayer (antigo, não mais usado)
@@ -19,6 +18,7 @@ TLS é a tecnologia que "tranca" (criptografa) os dados trafegados entre cliente
 **Analogia:**
 
 **SEM TLS (HTTP):**
+
 ```
 Você escreve uma carta e envia pelos Correios dentro de um CARTÃO POSTAL.
 ↓
@@ -27,6 +27,7 @@ Qualquer pessoa (carteiro, vizinho, funcionário) pode ler o conteúdo.
 ```
 
 **COM TLS (HTTPS):**
+
 ```
 Você escreve uma carta e envia dentro de um ENVELOPE LACRADO.
 ↓
@@ -39,6 +40,7 @@ Apenas o destinatário pode abrir e ler.
 Sem TLS, suas informações trafegam "abertas" pela internet:
 
 **Dados vulneráveis sem HTTPS:**
+
 - ❌ Senhas
 - ❌ Números de cartão de crédito
 - ❌ Dados pessoais (CPF, endereço, telefone)
@@ -46,6 +48,7 @@ Sem TLS, suas informações trafegam "abertas" pela internet:
 - ❌ Tokens de autenticação
 
 **Com HTTPS (TLS):**
+
 - ✅ Dados criptografados
 - ✅ Identidade do servidor verificada
 - ✅ Integridade (dados não foram alterados)
@@ -100,6 +103,7 @@ Quando você acessa um site HTTPS, acontece uma "negociação" (handshake) antes
 Um **certificado** é como uma "carteira de identidade" digital que prova que um site é legítimo.
 
 **O que contém:**
+
 - 🏢 Nome do site/empresa
 - 🔑 Chave pública (para criptografia)
 - 📅 Validade (data início e fim)
@@ -126,6 +130,7 @@ Um **certificado** é como uma "carteira de identidade" digital que prova que um
 São empresas confiáveis que "assinam" certificados, garantindo sua validade.
 
 **CAs Famosas:**
+
 - **Let's Encrypt** (gratuita, automatizada)
 - **DigiCert**
 - **GlobalSign**
@@ -144,12 +149,12 @@ São empresas confiáveis que "assinam" certificados, garantindo sua validade.
 
 #### Tipos de Certificados
 
-| Tipo | Validação | Uso | Preço |
-|------|-----------|-----|-------|
-| **DV** (Domain Validation) | Apenas domínio | Sites pessoais, blogs | Grátis - $50/ano |
-| **OV** (Organization Validation) | Domínio + empresa | Sites corporativos | $50 - $200/ano |
-| **EV** (Extended Validation) | Validação rigorosa | Bancos, e-commerce | $200 - $1000/ano |
-| **Wildcard** | Subdomínios ilimitados | `*.exemplo.com` | $100 - $500/ano |
+| Tipo                             | Validação              | Uso                   | Preço            |
+| -------------------------------- | ---------------------- | --------------------- | ---------------- |
+| **DV** (Domain Validation)       | Apenas domínio         | Sites pessoais, blogs | Grátis - $50/ano |
+| **OV** (Organization Validation) | Domínio + empresa      | Sites corporativos    | $50 - $200/ano   |
+| **EV** (Extended Validation)     | Validação rigorosa     | Bancos, e-commerce    | $200 - $1000/ano |
+| **Wildcard**                     | Subdomínios ilimitados | `*.exemplo.com`       | $100 - $500/ano  |
 
 **Visual no navegador:**
 
@@ -163,14 +168,14 @@ EV (barra verde - alguns navegadores):
 
 ### 🆚 HTTP vs HTTPS
 
-| HTTP | HTTPS |
-|------|-------|
-| `http://exemplo.com` | `https://exemplo.com` |
-| Porta 80 | Porta 443 |
-| ❌ Sem criptografia | ✅ Criptografia TLS |
-| 🔓 Dados visíveis | 🔐 Dados protegidos |
-| ⚠️ Inseguro | ✅ Seguro |
-| ❌ Navegador alerta | ✅ Cadeado verde |
+| HTTP                   | HTTPS                  |
+| ---------------------- | ---------------------- |
+| `http://exemplo.com`   | `https://exemplo.com`  |
+| Porta 80               | Porta 443              |
+| ❌ Sem criptografia    | ✅ Criptografia TLS    |
+| 🔓 Dados visíveis      | 🔐 Dados protegidos    |
+| ⚠️ Inseguro            | ✅ Seguro              |
+| ❌ Navegador alerta    | ✅ Cadeado verde       |
 | ❌ Google penaliza SEO | ✅ Google favorece SEO |
 
 **Visual no navegador:**
@@ -190,6 +195,7 @@ HTTPS:
 Let's Encrypt é uma CA que oferece certificados grátis com renovação automática.
 
 **Vantagens:**
+
 - ✅ Totalmente gratuito
 - ✅ Automatizado (certbot)
 - ✅ Confiável (reconhecido por todos navegadores)
@@ -217,6 +223,7 @@ sudo certbot renew --dry-run
 ```
 
 **Para Apache:**
+
 ```bash
 sudo apt install certbot python3-certbot-apache
 sudo certbot --apache -d exemplo.com
@@ -225,12 +232,14 @@ sudo certbot --apache -d exemplo.com
 #### Opção 2: Certificado Comercial (Pago)
 
 **Quando usar:**
+
 - Precisa de suporte dedicado
 - EV certificate (barra verde)
 - Garantia financeira
 - Wildcard (múltiplos subdomínios)
 
 **Passos:**
+
 1. Comprar em CA (DigiCert, GeoTrust, etc)
 2. Gerar CSR (Certificate Signing Request) no servidor
 3. Enviar CSR para CA
@@ -246,6 +255,7 @@ sudo certbot --apache -d exemplo.com
 2. Ver detalhes do certificado
 
 **Informações exibidas:**
+
 - ✅ Emitido para quem
 - ✅ Emitido por qual CA
 - ✅ Validade (não expirou?)
@@ -255,10 +265,10 @@ sudo certbot --apache -d exemplo.com
 
 ```bash
 # Verificar certificado de um site
-openssl s_client -connect exemplo.com:443 -servername exemplo.com
+openssl s_client -connect google.com:443 -servername google.com < /dev/null
 
 # Ver apenas validade
-echo | openssl s_client -connect exemplo.com:443 2>/dev/null | \
+echo | openssl s_client -connect google.com:443 2>/dev/null | \
   openssl x509 -noout -dates
 
 # Saída:
@@ -272,7 +282,6 @@ notAfter=Apr  1 23:59:59 2025 GMT
   - Testa configuração SSL/TLS
   - Dá nota (A+, A, B, C, F)
   - Mostra vulnerabilidades
-  
 - **WhyNoPadlock** (https://www.whynopadlock.com/)
   - Detecta por que cadeado não aparece
   - Mostra recursos HTTP em página HTTPS
@@ -282,6 +291,7 @@ notAfter=Apr  1 23:59:59 2025 GMT
 #### Problema 1: "Certificado Expirado"
 
 **Sintomas:**
+
 - Navegador: "Sua conexão não é particular"
 - Erro: `NET::ERR_CERT_DATE_INVALID`
 
@@ -289,19 +299,22 @@ notAfter=Apr  1 23:59:59 2025 GMT
 Certificado passou da data de validade.
 
 **Como verificar:**
+
 ```bash
-echo | openssl s_client -connect exemplo.com:443 2>/dev/null | \
+echo | openssl s_client -connect google.com:443 2>/dev/null | \
   openssl x509 -noout -dates
-  
+
 # Se notAfter < hoje, expirou!
 ```
 
 **Solução:**
+
 1. Renovar certificado:
+
    ```bash
    # Let's Encrypt
    sudo certbot renew
-   
+
    # Reiniciar servidor web
    sudo systemctl restart nginx
    ```
@@ -314,6 +327,7 @@ echo | openssl s_client -connect exemplo.com:443 2>/dev/null | \
 #### Problema 2: "Erro de Nome do Certificado"
 
 **Sintomas:**
+
 - Erro: `NET::ERR_CERT_COMMON_NAME_INVALID`
 - "O certificado não é válido para este site"
 
@@ -322,6 +336,7 @@ Certificado foi emitido para `exemplo.com`, mas você está acessando `www.exemp
 
 **Solução:**
 Obter certificado que cubra ambos:
+
 ```bash
 sudo certbot --nginx -d exemplo.com -d www.exemplo.com
 ```
@@ -331,6 +346,7 @@ Ou usar certificado wildcard (`*.exemplo.com`).
 #### Problema 3: "Conteúdo Misto" (Mixed Content)
 
 **Sintomas:**
+
 - Site HTTPS, mas cadeado não aparece ou aparece com aviso
 - Console do navegador: "Mixed Content Warning"
 
@@ -338,49 +354,69 @@ Ou usar certificado wildcard (`*.exemplo.com`).
 Página HTTPS carrega recursos HTTP (imagens, scripts, CSS).
 
 **Exemplo:**
+
 ```html
 <!-- Página: https://img.freepik.com/free-vector/modern-conectivity-logo-template_23-2147934052.jpg -->
 
 ✅ OK:
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Web.com_logo.svg/2560px-Web.com_logo.svg.png">
+<img
+  src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Web.com_logo.svg/2560px-Web.com_logo.svg.png"
+/>
 
 ❌ ERRO (HTTP em página HTTPS):
-<img src="https://i.ytimg.com/vi/uD6zczawkyU/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLAmmgipLedJYxC7smOKkbBJmwZgjw">
+<img
+  src="https://i.ytimg.com/vi/uD6zczawkyU/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLAmmgipLedJYxC7smOKkbBJmwZgjw"
+/>
 <script src="http://cdn.example.com/script.js"></script>
 ```
 
 **Como encontrar:**
+
 1. Abrir DevTools (F12)
 2. Aba "Console"
 3. Ver avisos de "Mixed Content"
 
 **Solução:**
+
 1. Mudar todos os recursos para HTTPS
 2. Ou usar URLs relativas/protocol-relative:
    ```html
    <!-- Protocol-relative -->
-   <img src="//exemplo.com/foto.jpg">
+   <img src="//exemplo.com/foto.jpg" />
    <!-- Usa HTTP ou HTTPS automaticamente -->
    ```
 
 #### Problema 4: "Autoridade Certificadora Não Confiável"
 
 **Sintomas:**
+
 - Erro: `NET::ERR_CERT_AUTHORITY_INVALID`
 - "O certificado não foi emitido por uma autoridade confiável"
 
 **Causas:**
+
 1. Certificado auto-assinado
 2. CA não reconhecida
 3. Cadeia de certificados incompleta
 
 **Como verificar:**
+
 ```bash
 # Verificar cadeia completa
-openssl s_client -connect exemplo.com:443 -showcerts
+openssl s_client -connect google.com:443 -showcerts < /dev/null 2>/dev/null | awk '/-----BEGIN CERTIFICATE-----/,/-----END CERTIFICATE-----/' | \
+while read -r line; do
+  echo "$line" >> temp.pem
+  if [[ "$line" == "-----END CERTIFICATE-----" ]]; then
+    echo -e "\n===== Certificado Decodificado ====="
+    openssl x509 -in temp.pem -noout -subject -issuer -dates -fingerprint -sha256
+    rm temp.pem
+    echo
+  fi
+done
 ```
 
 **Soluções:**
+
 1. Usar certificado de CA reconhecida (Let's Encrypt, DigiCert, etc)
 2. Instalar certificados intermediários no servidor
 3. Se auto-assinado, usar apenas para desenvolvimento/testes
@@ -388,22 +424,26 @@ openssl s_client -connect exemplo.com:443 -showcerts
 #### Problema 5: "SSL Handshake Failed"
 
 **Sintomas:**
+
 - Erro: `SSL_ERROR_HANDSHAKE_FAILURE`
 - Não consegue estabelecer conexão segura
 
 **Causas:**
+
 1. Protocolo TLS antigo (TLS 1.0, 1.1 desabilitado)
 2. Ciphers incompatíveis
 3. Firewall bloqueando porta 443
 
 **Como verificar:**
+
 ```bash
 # Testar conexão TLS
-openssl s_client -connect exemplo.com:443 -tls1_2
-openssl s_client -connect exemplo.com:443 -tls1_3
+openssl s_client -connect google.com:443 -tls1_2 < /dev/null
+openssl s_client -connect google.com:443 -tls1_3 < /dev/null
 ```
 
 **Solução:**
+
 1. Atualizar configuração do servidor (habilitar TLS 1.2+)
 2. Configurar ciphers modernos
 3. Verificar firewall (porta 443 aberta?)
@@ -416,25 +456,25 @@ openssl s_client -connect exemplo.com:443 -tls1_3
 server {
     listen 443 ssl http2;
     server_name exemplo.com www.exemplo.com;
-    
+
     # Certificado
     ssl_certificate /etc/letsencrypt/live/exemplo.com/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/exemplo.com/privkey.pem;
-    
+
     # Protocolos (só TLS 1.2 e 1.3)
     ssl_protocols TLSv1.2 TLSv1.3;
-    
+
     # Ciphers seguros
     ssl_ciphers HIGH:!aNULL:!MD5;
     ssl_prefer_server_ciphers on;
-    
+
     # OCSP Stapling (melhora performance)
     ssl_stapling on;
     ssl_stapling_verify on;
-    
+
     # HSTS (força HTTPS)
     add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
-    
+
     # Restante da configuração...
 }
 
@@ -452,19 +492,19 @@ server {
 <VirtualHost *:443>
     ServerName exemplo.com
     ServerAlias www.exemplo.com
-    
+
     # Certificado
     SSLCertificateFile /etc/letsencrypt/live/exemplo.com/cert.pem
     SSLCertificateKeyFile /etc/letsencrypt/live/exemplo.com/privkey.pem
     SSLCertificateChainFile /etc/letsencrypt/live/exemplo.com/chain.pem
-    
+
     # Protocolos
     SSLProtocol all -SSLv2 -SSLv3 -TLSv1 -TLSv1.1
-    
+
     # Ciphers
     SSLCipherSuite HIGH:!aNULL:!MD5
     SSLHonorCipherOrder on
-    
+
     # HSTS
     Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
 </VirtualHost>
@@ -505,6 +545,7 @@ mesmo se o usuário digitar http://"
 ```
 
 **Vantagens:**
+
 - ✅ Protege contra downgrade attacks
 - ✅ Mais rápido (não tenta HTTP antes)
 - ✅ Previne ataques man-in-the-middle
@@ -521,14 +562,14 @@ Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains
 
 ### 📊 TLS Versions
 
-| Versão | Status | Segurança | Uso |
-|--------|--------|-----------|-----|
-| SSL 2.0 | ❌ Obsoleto | 🔴 Inseguro | Nunca usar |
-| SSL 3.0 | ❌ Obsoleto | 🔴 Inseguro | Nunca usar |
-| TLS 1.0 | ⚠️ Depreciado | 🟡 Fraco | Evitar |
-| TLS 1.1 | ⚠️ Depreciado | 🟡 Fraco | Evitar |
-| TLS 1.2 | ✅ Atual | 🟢 Seguro | Usar |
-| TLS 1.3 | ✅ Moderno | 🟢 Muito seguro | Usar |
+| Versão  | Status        | Segurança       | Uso        |
+| ------- | ------------- | --------------- | ---------- |
+| SSL 2.0 | ❌ Obsoleto   | 🔴 Inseguro     | Nunca usar |
+| SSL 3.0 | ❌ Obsoleto   | 🔴 Inseguro     | Nunca usar |
+| TLS 1.0 | ⚠️ Depreciado | 🟡 Fraco        | Evitar     |
+| TLS 1.1 | ⚠️ Depreciado | 🟡 Fraco        | Evitar     |
+| TLS 1.2 | ✅ Atual      | 🟢 Seguro       | Usar       |
+| TLS 1.3 | ✅ Moderno    | 🟢 Muito seguro | Usar       |
 
 **Recomendação:** Habilitar apenas TLS 1.2 e 1.3.
 

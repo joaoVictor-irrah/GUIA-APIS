@@ -7,7 +7,6 @@
 
 ---
 
-
 ### 📞 Cenário 1: "Site Fora do Ar"
 
 **Cliente liga:** "Nosso site não está abrindo!"
@@ -61,10 +60,10 @@
 2. SE 401 (Unauthorized)
    - Token está sendo enviado?
      $ curl -H "Authorization: Bearer TOKEN" https://api.com/endpoint
-   
+
    - Token é válido?
      Verificar se não expirou
-   
+
    - Token está no formato correto?
      Bearer antes do token?
 
@@ -75,7 +74,7 @@
 4. SE 400 (Bad Request)
    - JSON está válido?
      Testar em https://jsonlint.com
-   
+
    - Campos obrigatórios foram enviados?
    - Tipos de dados estão corretos?
 
@@ -104,7 +103,7 @@
    $ curl -X POST https://cliente.com/webhook \
      -H "Content-Type: application/json" \
      -d '{"teste": true}'
-   
+
    - Retorna 200? → Endpoint funciona
    - Erro? → Problema no endpoint
 
@@ -173,28 +172,22 @@
 
 ```
 1. CONFIRMAR EXPIRAÇÃO
-   $ echo | openssl s_client -connect cliente.com:443 2>/dev/null | \
+   $ echo | openssl s_client -connect google.com:443 2>/dev/null | \
      openssl x509 -noout -dates
 
 2. RENOVAR CERTIFICADO
 
-   # Se Let's Encrypt:
-   $ sudo certbot renew
-   $ sudo systemctl restart nginx
+   # Renove o certificado do site.
 
 3. VERIFICAR RENOVAÇÃO
-   $ echo | openssl s_client -connect cliente.com:443 2>/dev/null | \
+   $ echo | openssl s_client -connect google.com:443 2>/dev/null | \
      openssl x509 -noout -dates
-   
+
    # Deve mostrar nova data
 
 4. LIMPAR CACHE DO NAVEGADOR
    - Instruir cliente a pressionar Ctrl+Shift+R
    - Ou testar em modo anônimo
-
-5. CONFIGURAR RENOVAÇÃO AUTOMÁTICA
-   # Verificar se cron está ativo
-   $ sudo systemctl status certbot.timer
 ```
 
 ---
@@ -204,36 +197,43 @@
 ### Para Aprofundar em Cada Tópico:
 
 **DNS:**
+
 - Praticar com `nslookup`, `dig`
 - Configurar DNS em Cloudflare/Route53
 - Estudar propagação e TTL
 
 **HTTP/REST:**
+
 - Instalar Postman, fazer requisições
 - Criar conta em APIs públicas (GitHub, OpenWeather)
 - Estudar códigos de status (decorar principais)
 
 **WebSocket:**
+
 - Testar chat em tempo real
 - Usar browser DevTools para ver mensagens
 - Criar projeto simples de notificações
 
 **APIs REST:**
+
 - Ler documentação de APIs (Stripe, Twilio)
 - Praticar com curl/httpie
 - Entender versionamento e paginação
 
 **Webhooks:**
+
 - Usar webhook.site para inspecionar
 - Configurar ngrok para testes locais
 - Implementar endpoint simples
 
 **SSL/TLS:**
+
 - Obter certificado Let's Encrypt
 - Usar SSL Labs para testar
 - Forçar HTTPS no servidor
 
 **Microserviços:**
+
 - Estudar arquitetura de empresas (Netflix, Uber)
 - Aprender Docker básico
 - Entender comunicação síncrona vs assíncrona
@@ -241,17 +241,20 @@
 ### Recursos Online Recomendados:
 
 **Cursos Gratuitos:**
+
 - freeCodeCamp (APIs e HTTP)
 - Khan Academy (Fundamentos de Internet)
 - YouTube (Traversy Media, Fireship)
 
 **Documentações Oficiais:**
+
 - MDN Web Docs (HTTP, WebSocket)
 - Postman Learning Center
 - Docker Docs
 - Kubernetes Docs
 
 **Ferramentas Para Praticar:**
+
 - HTTPBin.org (teste de requisições HTTP)
 - JSONPlaceholder (API fake para testes)
 - Webhook.site (inspecionar webhooks)
@@ -262,6 +265,7 @@
 ## ✅ Checklist Final para Equipe de Suporte
 
 **Conhecimentos Essenciais:**
+
 - [ ] Entendo o que é DNS e como troubleshoot
 - [ ] Sei os métodos HTTP (GET, POST, PUT, DELETE)
 - [ ] Conheço os códigos de status HTTP principais
@@ -273,6 +277,7 @@
 - [ ] Sei conceitos básicos de microserviços
 
 **Ferramentas Que Domino:**
+
 - [ ] nslookup / dig (DNS)
 - [ ] curl / Postman (APIs)
 - [ ] Browser DevTools (Network, Console)
@@ -280,6 +285,7 @@
 - [ ] openssl (certificados)
 
 **Troubleshooting:**
+
 - [ ] Sei diagnosticar "site fora do ar"
 - [ ] Sei investigar erros de API
 - [ ] Sei verificar problemas de DNS
@@ -298,7 +304,7 @@
 
 ## 🎉 Parabéns!
 
-Você concluiu todo o guia de fundamentos de APIs! 
+Você concluiu todo o guia de fundamentos de APIs!
 
 Continue praticando e consultando esta documentação sempre que necessário.
 
