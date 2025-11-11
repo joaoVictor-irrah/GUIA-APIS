@@ -218,30 +218,7 @@ O computador do cliente guardou (fez cache) da informação DNS antiga.
 
 **Solução:**
 
-**Windows:**
-```cmd
-# Abrir Prompt de Comando como Administrador
-ipconfig /flushdns
-
-# Mensagem de sucesso:
-# "Cache do DNS Resolver foi liberado com êxito."
-```
-
-**Mac:**
-```bash
-# Terminal
-sudo dscacheutil -flushcache
-sudo killall -HUP mDNSResponder
-```
-
-**Linux:**
-```bash
-# Ubuntu/Debian
-sudo systemd-resolve --flush-caches
-
-# Verificar
-sudo systemd-resolve --statistics
-```
+Limpar o cache do DNS Resolver do cliente
 
 ### 📊 Entendendo a Hierarquia DNS
 
