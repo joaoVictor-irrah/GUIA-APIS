@@ -344,22 +344,6 @@ curl -L https://exemplo.com
 curl -w "Tempo: %{time_total}s\n" https://api.exemplo.com
 ```
 
-#### 4. **httpie** (Mais amigável que curl)
-
-```bash
-# Instalar
-pip install httpie
-
-# GET simples
-http GET https://api.exemplo.com/produtos
-
-# POST com JSON
-http POST https://api.exemplo.com/produtos nome="Notebook" preco:=3000
-
-# Com autenticação
-http GET https://api.exemplo.com/usuarios Authorization:"Bearer TOKEN123"
-```
-
 ### ⚠️ Problemas Comuns HTTP (Para Suporte)
 
 #### Problema 1: "Erro 404 - Não encontrado"
