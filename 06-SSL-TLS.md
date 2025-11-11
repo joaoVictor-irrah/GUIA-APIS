@@ -188,94 +188,6 @@ HTTPS:
 🔒 https://exemplo.com
 ```
 
-### 🛠️ Obtendo um Certificado SSL/TLS
-
-#### Opção 1: Let's Encrypt (Gratuito, Automatizado)
-
-Let's Encrypt é uma CA que oferece certificados grátis com renovação automática.
-
-**Vantagens:**
-
-- ✅ Totalmente gratuito
-- ✅ Automatizado (certbot)
-- ✅ Confiável (reconhecido por todos navegadores)
-- ✅ Renovação automática a cada 90 dias
-
-**Como instalar (servidor Linux):**
-
-```bash
-# 1. Instalar Certbot
-sudo apt update
-sudo apt install certbot python3-certbot-nginx
-
-# 2. Obter certificado (Nginx)
-sudo certbot --nginx -d exemplo.com -d www.exemplo.com
-
-# 3. Certbot configura tudo automaticamente!
-# - Obtém certificado
-# - Configura Nginx
-# - Configura renovação automática
-
-# 4. Testar renovação
-sudo certbot renew --dry-run
-
-# 5. Certificado será renovado automaticamente a cada 90 dias
-```
-
-**Para Apache:**
-
-```bash
-sudo apt install certbot python3-certbot-apache
-sudo certbot --apache -d exemplo.com
-```
-
-#### Opção 2: Certificado Comercial (Pago)
-
-**Quando usar:**
-
-- Precisa de suporte dedicado
-- EV certificate (barra verde)
-- Garantia financeira
-- Wildcard (múltiplos subdomínios)
-
-**Passos:**
-
-1. Comprar em CA (DigiCert, GeoTrust, etc)
-2. Gerar CSR (Certificate Signing Request) no servidor
-3. Enviar CSR para CA
-4. CA valida identidade
-5. CA emite certificado
-6. Instalar certificado no servidor
-
-### 🔍 Verificando Certificados
-
-#### No Navegador
-
-1. Clicar no cadeado ao lado da URL
-2. Ver detalhes do certificado
-
-**Informações exibidas:**
-
-- ✅ Emitido para quem
-- ✅ Emitido por qual CA
-- ✅ Validade (não expirou?)
-- ✅ Algoritmo de criptografia
-
-#### Via Linha de Comando
-
-```bash
-# Verificar certificado de um site
-openssl s_client -connect google.com:443 -servername google.com < /dev/null
-
-# Ver apenas validade
-echo | openssl s_client -connect google.com:443 2>/dev/null | \
-  openssl x509 -noout -dates
-
-# Saída:
-notBefore=Jan  1 00:00:00 2025 GMT
-notAfter=Apr  1 23:59:59 2025 GMT
-```
-
 #### Ferramentas Online
 
 - **SSL Labs** (https://www.ssllabs.com/ssltest/)
@@ -286,7 +198,7 @@ notAfter=Apr  1 23:59:59 2025 GMT
   - Detecta por que cadeado não aparece
   - Mostra recursos HTTP em página HTTPS
 
-### ⚠️ Problemas Comuns SSL/TLS (Para Suporte)
+### ⚠️ Problemas Comuns SSL/TLS
 
 #### Problema 1: "Certificado Expirado"
 
@@ -307,23 +219,6 @@ echo | openssl s_client -connect google.com:443 2>/dev/null | \
 # Se notAfter < hoje, expirou!
 ```
 
-**Solução:**
-
-1. Renovar certificado:
-
-   ```bash
-   # Let's Encrypt
-   sudo certbot renew
-
-   # Reiniciar servidor web
-   sudo systemctl restart nginx
-   ```
-
-2. Se renovação automática falhou, verificar logs:
-   ```bash
-   sudo journalctl -u certbot.timer
-   ```
-
 #### Problema 2: "Erro de Nome do Certificado"
 
 **Sintomas:**
@@ -336,12 +231,6 @@ Certificado foi emitido para `exemplo.com`, mas você está acessando `www.exemp
 
 **Solução:**
 Obter certificado que cubra ambos:
-
-```bash
-sudo certbot --nginx -d exemplo.com -d www.exemplo.com
-```
-
-Ou usar certificado wildcard (`*.exemplo.com`).
 
 #### Problema 3: "Conteúdo Misto" (Mixed Content)
 
@@ -370,21 +259,10 @@ Página HTTPS carrega recursos HTTP (imagens, scripts, CSS).
 <script src="http://cdn.example.com/script.js"></script>
 ```
 
-**Como encontrar:**
-
-1. Abrir DevTools (F12)
-2. Aba "Console"
-3. Ver avisos de "Mixed Content"
-
 **Solução:**
 
 1. Mudar todos os recursos para HTTPS
-2. Ou usar URLs relativas/protocol-relative:
-   ```html
-   <!-- Protocol-relative -->
-   <img src="//exemplo.com/foto.jpg" />
-   <!-- Usa HTTP ou HTTPS automaticamente -->
-   ```
+2. Ou usar URLs relativas/protocol-relative
 
 #### Problema 4: "Autoridade Certificadora Não Confiável"
 
@@ -398,22 +276,6 @@ Página HTTPS carrega recursos HTTP (imagens, scripts, CSS).
 1. Certificado auto-assinado
 2. CA não reconhecida
 3. Cadeia de certificados incompleta
-
-**Como verificar:**
-
-```bash
-# Verificar cadeia completa
-openssl s_client -connect google.com:443 -showcerts < /dev/null 2>/dev/null | awk '/-----BEGIN CERTIFICATE-----/,/-----END CERTIFICATE-----/' | \
-while read -r line; do
-  echo "$line" >> temp.pem
-  if [[ "$line" == "-----END CERTIFICATE-----" ]]; then
-    echo -e "\n===== Certificado Decodificado ====="
-    openssl x509 -in temp.pem -noout -subject -issuer -dates -fingerprint -sha256
-    rm temp.pem
-    echo
-  fi
-done
-```
 
 **Soluções:**
 
@@ -434,87 +296,11 @@ done
 2. Ciphers incompatíveis
 3. Firewall bloqueando porta 443
 
-**Como verificar:**
-
-```bash
-# Testar conexão TLS
-openssl s_client -connect google.com:443 -tls1_2 < /dev/null
-openssl s_client -connect google.com:443 -tls1_3 < /dev/null
-```
-
 **Solução:**
 
 1. Atualizar configuração do servidor (habilitar TLS 1.2+)
 2. Configurar ciphers modernos
 3. Verificar firewall (porta 443 aberta?)
-
-### 🔧 Configurando TLS no Servidor Web
-
-#### Nginx (Boas práticas)
-
-```nginx
-server {
-    listen 443 ssl http2;
-    server_name exemplo.com www.exemplo.com;
-
-    # Certificado
-    ssl_certificate /etc/letsencrypt/live/exemplo.com/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/exemplo.com/privkey.pem;
-
-    # Protocolos (só TLS 1.2 e 1.3)
-    ssl_protocols TLSv1.2 TLSv1.3;
-
-    # Ciphers seguros
-    ssl_ciphers HIGH:!aNULL:!MD5;
-    ssl_prefer_server_ciphers on;
-
-    # OCSP Stapling (melhora performance)
-    ssl_stapling on;
-    ssl_stapling_verify on;
-
-    # HSTS (força HTTPS)
-    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
-
-    # Restante da configuração...
-}
-
-# Redirecionar HTTP → HTTPS
-server {
-    listen 80;
-    server_name exemplo.com www.exemplo.com;
-    return 301 https://$server_name$request_uri;
-}
-```
-
-#### Apache
-
-```apache
-<VirtualHost *:443>
-    ServerName exemplo.com
-    ServerAlias www.exemplo.com
-
-    # Certificado
-    SSLCertificateFile /etc/letsencrypt/live/exemplo.com/cert.pem
-    SSLCertificateKeyFile /etc/letsencrypt/live/exemplo.com/privkey.pem
-    SSLCertificateChainFile /etc/letsencrypt/live/exemplo.com/chain.pem
-
-    # Protocolos
-    SSLProtocol all -SSLv2 -SSLv3 -TLSv1 -TLSv1.1
-
-    # Ciphers
-    SSLCipherSuite HIGH:!aNULL:!MD5
-    SSLHonorCipherOrder on
-
-    # HSTS
-    Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
-</VirtualHost>
-
-# Redirecionar HTTP → HTTPS
-<VirtualHost *:80>
-    ServerName exemplo.com
-    Redirect permanent / https://exemplo.com/
-</VirtualHost>
-```
 
 ### ✅ Checklist SSL/TLS
 
@@ -528,37 +314,6 @@ server {
 - [ ] HSTS configurado
 - [ ] Renovação automática (Let's Encrypt)
 - [ ] Nota A ou A+ no SSL Labs
-
-### 🏆 HSTS (HTTP Strict Transport Security)
-
-HSTS força navegadores a SEMPRE usarem HTTPS.
-
-**Como funciona:**
-
-```http
-# Servidor envia cabeçalho:
-Strict-Transport-Security: max-age=31536000; includeSubDomains
-
-# Navegador entende:
-"Por 1 ano (31536000 segundos), SEMPRE acesse este site via HTTPS,
-mesmo se o usuário digitar http://"
-```
-
-**Vantagens:**
-
-- ✅ Protege contra downgrade attacks
-- ✅ Mais rápido (não tenta HTTP antes)
-- ✅ Previne ataques man-in-the-middle
-
-**Configuração:**
-
-```nginx
-# Nginx
-add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" always;
-
-# Apache
-Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
-```
 
 ### 📊 TLS Versions
 
