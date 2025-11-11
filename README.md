@@ -2,7 +2,7 @@
 
 > **Objetivo:** Entender os conceitos fundamentais de APIs, redes e comunicação web de forma didática e acessível
 >
-> **Público:** Equipe de suporte técnico júnior sem experiência prévia com programação
+> **Público:** Equipe de suporte técnico e / ou outras partes interessadas
 >
 > **Tempo de leitura total:** 90-120 minutos
 
