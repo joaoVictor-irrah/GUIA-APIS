@@ -162,30 +162,9 @@ Seu sistema:
    - Se diferente: ❌ Fraude!
 ```
 
-**Exemplo de validação (conceitual):**
-
-```python
-import hmac
-import hashlib
-
-def validar_webhook(dados_recebidos, assinatura_recebida, chave_secreta):
-    # Calcula hash dos dados
-    hash_calculado = hmac.new(
-        key=chave_secreta.encode(),
-        msg=dados_recebidos.encode(),
-        digestmod=hashlib.sha256
-    ).hexdigest()
-    
-    # Compara com assinatura recebida
-    if hmac.compare_digest(hash_calculado, assinatura_recebida):
-        return True  # ✅ Autêntico
-    else:
-        return False  # ❌ Inválido
-```
-
 #### 2. **HTTPS Obrigatório**
 
-Sempre use `https://` para receber webhooks (nunca `http://`).
+Recomende sempre usar `https://` para receber webhooks (nunca `http://`).
 
 #### 3. **IP Whitelist**
 
@@ -210,34 +189,6 @@ Incluir parâmetro secreto na URL:
 POST https://loja.com/webhook?secret=abc123xyz789
 
 Se secret não bater, rejeitar.
-```
-
-### 🛠️ Implementando Recebimento de Webhooks
-
-**Checklist do endpoint:**
-
-```python
-@app.route('/webhook/pagamento', methods=['POST'])
-def webhook_pagamento():
-    # 1. Verificar método HTTP
-    if request.method != 'POST':
-        return 'Método não permitido', 405
-    
-    # 2. Obter dados
-    dados = request.get_json()
-    assinatura = request.headers.get('X-Webhook-Signature')
-    
-    # 3. Validar assinatura
-    if not validar_assinatura(dados, assinatura):
-        return 'Assinatura inválida', 401
-    
-    # 4. Processar evento (rápido!)
-    # ⚠️ Não faça processamento pesado aqui!
-    # Apenas coloque em fila para processar depois
-    fila.adicionar(dados)
-    
-    # 5. Responder rapidamente (< 5 segundos)
-    return 'OK', 200
 ```
 
 **⚠️ IMPORTANTE - Processamento Assíncrono:**
@@ -392,25 +343,7 @@ curl -X POST https://seu-sistema.com/webhook \
 
 **Solução:**
 
-```python
-# Implementar idempotência
-@app.route('/webhook', methods=['POST'])
-def webhook():
-    dados = request.get_json()
-    webhook_id = dados.get('id')
-    
-    # Verificar se já processou
-    if ja_processado(webhook_id):
-        return 'OK', 200  # Retorna sucesso sem processar
-    
-    # Processar
-    processar_evento(dados)
-    
-    # Marcar como processado
-    marcar_processado(webhook_id)
-    
-    return 'OK', 200
-```
+Implementar idempotência para evitar processar o mesmo webhooks multiplas vezes.
 
 #### Problema 3: "Webhook com dados errados"
 
@@ -421,24 +354,6 @@ def webhook():
 1. Versão antiga da API
 2. Payload mudou (breaking change)
 3. Filtro configurado errado
-
-**Como investigar:**
-
-```python
-# Log completo do webhook
-@app.route('/webhook', methods=['POST'])
-def webhook():
-    # Guardar payload completo
-    payload = request.get_json()
-    headers = dict(request.headers)
-    
-    print(f"=== WEBHOOK RECEBIDO ===")
-    print(f"Headers: {headers}")
-    print(f"Payload: {payload}")
-    print(f"========================")
-    
-    # Processar...
-```
 
 **Soluções:**
 1. Verificar documentação da API (mudanças?)
@@ -456,50 +371,9 @@ def webhook():
 2. Consultas lentas ao banco
 3. Chamadas a APIs externas no meio do processamento
 
-**Solução - Usar fila:**
+**Solução**
 
-```python
-import redis
-import json
-
-# ❌ ANTES (síncrono - lento)
-@app.route('/webhook', methods=['POST'])
-def webhook_lento():
-    dados = request.get_json()
-    
-    # Demora 15 segundos (muitas operações)
-    atualizar_banco(dados)       # 5s
-    enviar_email(dados)          # 5s
-    sincronizar_estoque(dados)   # 5s
-    
-    return 'OK', 200  # Timeout!
-
-
-# ✅ DEPOIS (assíncrono - rápido)
-redis_client = redis.Redis()
-
-@app.route('/webhook', methods=['POST'])
-def webhook_rapido():
-    dados = request.get_json()
-    
-    # Apenas adiciona na fila (< 100ms)
-    redis_client.lpush('fila_webhooks', json.dumps(dados))
-    
-    return 'OK', 200  # Resposta rápida!
-
-# Worker separado processa a fila
-def worker():
-    while True:
-        # Pega da fila
-        dados = redis_client.brpop('fila_webhooks')
-        if dados:
-            webhook = json.loads(dados[1])
-            
-            # Processa (pode demorar, sem problema)
-            atualizar_banco(webhook)
-            enviar_email(webhook)
-            sincronizar_estoque(webhook)
-```
+Usar filas e processamento assíncrono se aplicável.
 
 ### ✅ Checklist Webhook Endpoint
 
