@@ -9,7 +9,7 @@
 
 ### 📞 Cenário 1: "Site Fora do Ar"
 
-**Cliente liga:** "Nosso site não está abrindo!"
+**Cliente reporta:** "Nosso site não está abrindo!"
 
 **Passo a passo de diagnóstico:**
 
@@ -116,15 +116,8 @@
    - Não expirou?
 
 5. VERIFICAR LOGS DO SERVIÇO
-   (se tiver acesso)
    - Webhook está sendo disparado?
    - Qual erro está retornando?
-
-6. USAR NGROK PARA TESTAR
-   $ ngrok http 3000
-   - Cadastrar URL do ngrok
-   - Ver se chega
-   - Se chegar, problema é firewall/rede
 ```
 
 ### 📞 Cenário 4: "Site Lento"
@@ -137,57 +130,21 @@
 1. MEDIR TEMPO DE RESPOSTA
    $ curl -w "Tempo: %{time_total}s\n" https://cliente.com
 
-2. VERIFICAR ONDE ESTÁ O DELAY
-   - DNS lookup lento?
-   - Conexão TCP lenta?
-   - TLS handshake lento?
-   - Servidor processando lento?
-
-3. TESTAR DE DIFERENTES LOCAIS
+2. TESTAR DE DIFERENTES LOCAIS
    - Slow global ou só em certa região?
    - Usar: https://www.webpagetest.org
 
-4. VERIFICAR CACHE
-   - Headers de cache configurados?
-   - CDN ativo?
-
-5. VERIFICAR TAMANHO DE ASSETS
+3. VERIFICAR TAMANHO DE ASSETS
    - Imagens muito grandes?
    - Muitos arquivos JS/CSS?
 
-6. ESCALAR PARA DEV/INFRA
+4. ESCALAR PARA DEV/INFRA
    Se > 3 segundos e não é problema de rede,
    escalar com:
    - URLs lentas específicas
    - Tempo de resposta
    - Região geográfica
    - Horário (sempre lento ou só pico?)
-```
-
-### 📞 Cenário 5: "Certificado SSL Expirado"
-
-**Cliente:** "Navegador diz que site não é seguro"
-
-**Solução:**
-
-```
-1. CONFIRMAR EXPIRAÇÃO
-   $ echo | openssl s_client -connect google.com:443 2>/dev/null | \
-     openssl x509 -noout -dates
-
-2. RENOVAR CERTIFICADO
-
-   # Renove o certificado do site.
-
-3. VERIFICAR RENOVAÇÃO
-   $ echo | openssl s_client -connect google.com:443 2>/dev/null | \
-     openssl x509 -noout -dates
-
-   # Deve mostrar nova data
-
-4. LIMPAR CACHE DO NAVEGADOR
-   - Instruir cliente a pressionar Ctrl+Shift+R
-   - Ou testar em modo anônimo
 ```
 
 ---
@@ -291,22 +248,6 @@
 - [ ] Sei verificar problemas de DNS
 - [ ] Sei identificar problemas de certificado
 - [ ] Sei debugar webhooks que não chegam
-
----
-
-**Documento criado em:** 10 de Novembro de 2025
-**Versão:** 1.0
-**Próxima revisão:** Trimestral
-
-**Feedback:** Este guia deve ser atualizado com novos cenários práticos conforme a equipe de suporte enfrenta casos reais. Contribua com suas experiências!
-
----
-
-## 🎉 Parabéns!
-
-Você concluiu todo o guia de fundamentos de APIs!
-
-Continue praticando e consultando esta documentação sempre que necessário.
 
 ---
 
