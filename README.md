@@ -359,7 +359,7 @@ Encontrou algo que pode melhorar nos docs?
 ---
 
 **Versão:** 1.1.13
-**Última atualização:** 2025-01-06
+**Última atualização:** 2025-11-11
 
 ---
 
