@@ -301,45 +301,7 @@ Cliente (App/Web)
 - **Envoy**
 - **Traefik**
 
-#### 2. **Service Discovery**
-
-Como serviços descobrem onde estão os outros?
-
-**Problema:**
-```
-Serviço Pedidos precisa chamar Serviço Produtos.
-Mas Produtos pode estar em:
-- 192.168.1.10:8080 (instância 1)
-- 192.168.1.11:8080 (instância 2)
-- 192.168.1.12:8080 (instância 3)
-
-Como saber qual usar?
-```
-
-**Solução - Service Registry:**
-
-```
-1. Serviço Produtos inicia:
-   Registra-se no Service Registry
-   "Estou em 192.168.1.10:8080"
-
-2. Serviço Pedidos precisa de Produtos:
-   Pergunta ao Service Registry
-   "Onde está Serviço Produtos?"
-   
-3. Service Registry responde:
-   "Tem 3 instâncias: 10, 11, 12"
-   
-4. Pedidos escolhe uma e faz requisição
-```
-
-**Ferramentas:**
-- **Consul** (HashiCorp)
-- **Eureka** (Netflix)
-- **Etcd**
-- **Zookeeper**
-
-#### 3. **Load Balancer**
+#### 2. **Load Balancer**
 
 Distribui requisições entre múltiplas instâncias.
 
@@ -368,7 +330,7 @@ Requisições
 - **AWS ELB/ALB**
 - **Traefik**
 
-#### 4. **Circuit Breaker**
+#### 3. **Circuit Breaker**
 
 Previne cascata de falhas quando um serviço cai.
 
@@ -420,7 +382,7 @@ Circuit Breaker: FECHA (volta ao normal)
 - **Polly** (.NET)
 - **Istio** (service mesh)
 
-#### 5. **Mensageria**
+#### 4. **Mensageria**
 
 Para comunicação assíncrona.
 
@@ -449,7 +411,7 @@ Características:
 - Ideal para event sourcing
 ```
 
-#### 6. **Containers e Orquestração**
+#### 5. **Containers e Orquestração**
 
 **Docker:**
 Empacota cada microserviço com suas dependências.
@@ -618,79 +580,6 @@ LEITURA (Queries):    [BD Read] ← [Serviço Read] ← Cliente
 - Escrita e leitura com modelos diferentes
 - Escala separadamente (mais leituras que escritas)
 - Otimizações específicas
-
-### ⚠️ Desafios de Microserviços (Para Suporte)
-
-#### 1. **Debugging Distribuído**
-
-**Problema:**
-Erro ocorre, mas qual serviço causou?
-
-**Solução - Distributed Tracing:**
-
-Cada requisição gera um **trace ID** que passa por todos os serviços.
-
-```
-Request: GET /pedidos/123
-
-Trace ID: xyz-789
-
-Serviço API Gateway   [xyz-789] → Recebeu requisição
-Serviço Pedidos       [xyz-789] → Buscou pedido
-Serviço Produtos      [xyz-789] → Buscou produtos (ERRO!)
-Serviço Pedidos       [xyz-789] → Retornou 500
-
-Com trace ID, vê que erro foi no Serviço Produtos.
-```
-
-**Ferramentas:**
-- **Jaeger**
-- **Zipkin**
-- **OpenTelemetry**
-- **AWS X-Ray**
-
-#### 2. **Consistência de Dados**
-
-**Problema:**
-Serviço A atualizou dados, mas Serviço B ainda vê dados antigos.
-
-**Causa:**
-Cada serviço tem seu BD. Não há transação global.
-
-**Abordagem:**
-- **Consistência eventual:** Aceitar que dados podem estar dessincronizados temporariamente
-- **Event Sourcing:** Armazenar eventos (não estado final)
-- **Saga Pattern:** Compensar transações que falharam
-
-#### 3. **Latência de Rede**
-
-**Problema:**
-Chamadas de rede entre serviços adicionam latência.
-
-```
-Monolito:
-Buscar usuário → 5ms (em memória)
-
-Microserviço:
-Buscar usuário → 50ms (chamada HTTP pela rede)
-```
-
-**Soluções:**
-- **Cache** (Redis, Memcached)
-- **GraphQL** (busca só o necessário)
-- **gRPC** (mais rápido que REST)
-- **Service Mesh** (otimiza comunicação)
-
-#### 4. **Overhead Operacional**
-
-**Problema:**
-Gerenciar 20 serviços é mais complexo que 1 aplicação.
-
-**Soluções:**
-- **CI/CD automatizado** (Jenkins, GitLab CI)
-- **Infrastructure as Code** (Terraform, Ansible)
-- **Kubernetes** (orquestração)
-- **Monitoring** (Prometheus, Grafana)
 
 ### ✅ Quando Usar Microserviços?
 
