@@ -505,17 +505,9 @@ curl -w "Tempo: %{time_total}s\n" \
 2. **Problema de sincronia:** Banco de dados replicado não atualizou
 3. **Browser cache:** Navegador guardou resposta
 
-**Como investigar:**
-```bash
-# Forçar busca sem cache
-curl -H "Cache-Control: no-cache" \
-  https://api.exemplo.com/produtos/123
-```
-
 **Soluções:**
 1. Limpar cache do navegador (Ctrl+Shift+R)
-2. Verificar cabeçalho `Cache-Control` na resposta
-3. Aguardar sincronização de banco (se aplicável)
+2. Aguardar sincronização de banco (se aplicável)
 
 ### ✅ Checklist API RESTful Bem Projetada
 
