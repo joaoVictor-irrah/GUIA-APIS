@@ -343,16 +343,23 @@ Quando precisar escalar um problema para o time de desenvolvimento, inclua:
 
 ---
 
-## 🔄 Atualização da Documentação
+## 📝 Contribuindo
 
-**Última atualização:** Novembro 2025
+Encontrou algo que pode melhorar nos docs?
 
-**Próximas adições planejadas:**
-- GraphQL (alternativa a REST)
-- gRPC (comunicação alta performance)
-- Rate Limiting e Throttling
-- OAuth 2.0 detalhado
-- Monitoramento e Observabilidade
+1. Abra issue descrevendo o problema
+2. Sugira melhoria específica
+3. Se for pequeno, faça PR direto
+
+**Mantenha:**
+- Exemplos concisos (5-30 linhas)
+- Linguagem clara e direta
+- Foco em pragmatismo
+
+---
+
+**Versão:** 1.1.13
+**Última atualização:** 2025-01-06
 
 ---
 
