@@ -228,41 +228,6 @@ A documentação está dividida em **9 módulos principais**:
 
 ---
 
-## 🚀 Roteiro de Aprendizado Sugerido
-
-### 🥉 Nível Iniciante (Primeiro contato)
-
-**Semana 1-2: Fundamentos**
-1. [01-DNS.md](./01-DNS.md) - Entenda como a internet encontra sites
-2. [02-HTTP.md](./02-HTTP.md) - A base de toda comunicação web
-3. [08-Glossario.md](./08-Glossario.md) - Referência de termos
-
-**Objetivo:** Conseguir diagnosticar problemas básicos de conectividade
-
----
-
-### 🥈 Nível Intermediário (Primeiras semanas)
-
-**Semana 3-4: APIs e Comunicação**
-4. [04-RESTful-API.md](./04-RESTful-API.md) - Como APIs modernas funcionam
-5. [06-SSL-TLS.md](./06-SSL-TLS.md) - Segurança e certificados
-6. [03-WebSocket.md](./03-WebSocket.md) - Comunicação em tempo real
-
-**Objetivo:** Conseguir diagnosticar e explicar erros de API
-
----
-
-### 🥇 Nível Avançado (Após primeiro mês)
-
-**Semana 5-6: Arquitetura e Prática**
-7. [05-Webhooks.md](./05-Webhooks.md) - Notificações automáticas
-8. [07-Microservicos.md](./07-Microservicos.md) - Sistemas distribuídos
-9. [09-Cenarios-Praticos.md](./09-Cenarios-Praticos.md) - Casos reais
-
-**Objetivo:** Entender arquiteturas complexas e resolver casos avançados
-
----
-
 ## 💡 Dicas de Uso
 
 ### Para Estudo
