@@ -198,6 +198,8 @@ HTTPS:
   - Detecta por que cadeado não aparece
   - Mostra recursos HTTP em página HTTPS
 
+---
+
 ### ⚠️ Problemas Comuns SSL/TLS
 
 #### Problema 1: "Certificado Expirado"
@@ -219,6 +221,8 @@ echo | openssl s_client -connect google.com:443 2>/dev/null | \
 # Se notAfter < hoje, expirou!
 ```
 
+---
+
 #### Problema 2: "Erro de Nome do Certificado"
 
 **Sintomas:**
@@ -231,6 +235,8 @@ Certificado foi emitido para `exemplo.com`, mas você está acessando `www.exemp
 
 **Solução:**
 Obter certificado que cubra ambos:
+
+---
 
 #### Problema 3: "Conteúdo Misto" (Mixed Content)
 
@@ -263,6 +269,8 @@ Página HTTPS carrega recursos HTTP (imagens, scripts, CSS).
 
 1. Mudar todos os recursos para HTTPS
 2. Ou usar URLs relativas/protocol-relative
+
+---
 
 #### Problema 4: "Autoridade Certificadora Não Confiável"
 
@@ -301,6 +309,8 @@ Página HTTPS carrega recursos HTTP (imagens, scripts, CSS).
 1. Atualizar configuração do servidor (habilitar TLS 1.2+)
 2. Configurar ciphers modernos
 3. Verificar firewall (porta 443 aberta?)
+
+---
 
 #### Problema 5: "API Retornando SSL: CERTIFICATE_VERIFY_FAILED"
 
